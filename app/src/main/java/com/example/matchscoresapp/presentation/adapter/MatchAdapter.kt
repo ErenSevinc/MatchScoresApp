@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.matchscoresapp.core.getAwayName
+import com.example.matchscoresapp.core.getHomeName
 import com.example.matchscoresapp.databinding.ItemMatchBinding
 import com.example.matchscoresapp.domain.model.Match
 
@@ -14,8 +16,8 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) : ListAdapter<Ma
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Match, onClick: (match: Match) -> Unit) {
             binding.textMatchStatus.text = item.matchAbbr
-            binding.textHomeTeam.text = item.homeName
-            binding.textAwayTeam.text = item.awayName
+            binding.textHomeTeam.text = item.getHomeName()
+            binding.textAwayTeam.text = item.getAwayName()
             binding.textMatchScore.text =
                 "${item.homeMatchScore} - ${item.awayMatchScore}"
             binding.textHalfTimeScore.text =
@@ -34,6 +36,7 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) : ListAdapter<Ma
     }
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
+
         holder.bind(getItem(position), onClick)
     }
 

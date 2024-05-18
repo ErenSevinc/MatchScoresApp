@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
+import com.example.matchscoresapp.core.toDate
 import com.example.matchscoresapp.databinding.FragmentMatchDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,7 +24,7 @@ class MatchDetailFragment : Fragment() {
         binding = FragmentMatchDetailBinding.inflate(layoutInflater, container, false)
 
         val abbr = args.matchItem.matchAbbr
-        val date = args.matchItem.date.toString()
+        val date = args.matchItem.date.toDate()
         val score = "${args.matchItem.homeMatchScore} - ${args.matchItem.awayMatchScore}"
         val homeName = args.matchItem.homeName
         val awayName = args.matchItem.awayName
