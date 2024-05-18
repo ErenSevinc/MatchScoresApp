@@ -1,18 +1,14 @@
 package com.example.matchscoresapp.domain.model
 
-import com.example.matchscoresapp.data.model.Tournament
-
-data class MatchesDataModel(
-    val tournamentOfMatches: List<League>
-)
-
 data class League(
+    val league: LeagueItem,
+    val list: List<Match>
+)
+data class LeagueItem(
     val id: Long,
     val name: String,
-    val url: String,
-    val matchList: List<Match>
+    val url: String
 )
-
 data class Match(
     val id: Long,
     val date: Long,

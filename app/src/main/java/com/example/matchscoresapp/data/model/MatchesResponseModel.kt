@@ -29,8 +29,8 @@ data class Score(
     @SerializedName("st") val st: Int?,
     @SerializedName("abbr") val abbr: String?,
     @SerializedName("min") val min: Long?,
-    @SerializedName("ht") val ht: TeamScore?,
-    @SerializedName("at")val at: TeamScore?,
+    @SerializedName("ht") val homeTeam: TeamScore?,
+    @SerializedName("at")val awayTeam: TeamScore?,
 )
 data class Tournament(
     @SerializedName("i") val tournamentId: Long?,
