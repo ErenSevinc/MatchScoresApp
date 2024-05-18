@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.matchscoresapp.core.getAwayName
-import com.example.matchscoresapp.core.setBackgroundColorAndDividerVisibility
 import com.example.matchscoresapp.core.getHomeName
+import com.example.matchscoresapp.core.setBackgroundColorAndDividerVisibility
 import com.example.matchscoresapp.databinding.ItemMatchBinding
 import com.example.matchscoresapp.domain.model.Match
 
@@ -24,19 +24,21 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) :
             onClick: (match: Match) -> Unit,
             bgAndDividerVisibility: Pair<Int, Boolean>
         ) {
-            binding.container.background =
-                binding.root.context.getDrawable(bgAndDividerVisibility.first)
-            binding.divider.isVisible = bgAndDividerVisibility.second
-            binding.textMatchStatus.text = item.matchAbbr
-            binding.textHomeTeam.text = item.getHomeName()
-            binding.textAwayTeam.text = item.getAwayName()
-            binding.textMatchScore.text =
-                "${item.homeMatchScore} - ${item.awayMatchScore}"
-            binding.textHalfTimeScore.text =
-                "${item.homeHalfScore} - ${item.awayMatchScore}"
+            with(binding) {
+                container.background =
+                    root.context.getDrawable(bgAndDividerVisibility.first)
+                binding.divider.isVisible = bgAndDividerVisibility.second
+                textMatchStatus.text = item.matchAbbr
+                textHomeTeam.text = item.getHomeName()
+                textAwayTeam.text = item.getAwayName()
+                textMatchScore.text =
+                    "${item.homeMatchScore} - ${item.awayMatchScore}"
+                textHalfTimeScore.text =
+                    "${item.homeHalfScore} - ${item.awayMatchScore}"
 
-            binding.root.setOnClickListener {
-                onClick.invoke(item)
+                root.setOnClickListener {
+                    onClick.invoke(item)
+                }
             }
         }
     }

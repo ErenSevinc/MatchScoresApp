@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.matchscoresapp.core.LeagueUIState
 import com.example.matchscoresapp.core.Resource
 import com.example.matchscoresapp.data.model.mapper.toLeague
 import com.example.matchscoresapp.data.model.mapper.toMatchList
@@ -18,27 +19,24 @@ class MatchListViewModel @Inject constructor(
     private val getMatchesUseCase: GetMatchesUseCase
 ) : ViewModel() {
 
-    private val _matches = MutableLiveData<MutableList<League>>()
-    val matches: LiveData<MutableList<League>> = _matches
-
-    private val _isLoading = MutableLiveData(true)
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _error = MutableLiveData<String?>()
-    val error: LiveData<String?> = _error
+    private val _matchesState = MutableLiveData<LeagueUIState>()
+    val matchesState: LiveData<LeagueUIState> = _matchesState
 
     private val itemList = mutableListOf<League>()
+
+    init {
+        _matchesState.value = LeagueUIState.Loading(true)
+    }
 
     fun getMatches() {
         viewModelScope.launch {
             getMatchesUseCase.execute().collect { it ->
                 when (it) {
                     is Resource.Error -> {
-                        _error.value = it.errorMessage
-                        _isLoading.value = false
+                        _matchesState.value = LeagueUIState.Error(it.errorMessage ?: "Error")
                     }
                     is Resource.Loading -> {
-                        _isLoading.value = true
+                        _matchesState.value = LeagueUIState.Loading(true)
                     }
                     is Resource.Success -> {
                         it.data?.let { baseApiResponse ->
@@ -54,7 +52,7 @@ class MatchListViewModel @Inject constructor(
                                         )
                                     }
                                 }
-                            _matches.value = itemList
+                            _matchesState.value = LeagueUIState.LeagueList(itemList)
                         }
                     }
                 }

@@ -7,8 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.example.matchscoresapp.core.LeagueUIState
 import com.example.matchscoresapp.databinding.FragmentMatchListBinding
+import com.example.matchscoresapp.domain.model.League
 import com.example.matchscoresapp.presentation.adapter.LeagueAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,17 +45,47 @@ class MatchListFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.matches.observe(viewLifecycleOwner) {
-            it?.let { res ->
-                Log.e("DATAS", res.toString())
-                adapter?.submitList(it)
-
-            }
-            viewModel.error.observe(viewLifecycleOwner) {
-                it?.let { err ->
-                    Log.e("ERR", err)
+        viewModel.matchesState.observe(viewLifecycleOwner) {
+            when(it) {
+                is LeagueUIState.Error -> {
+                    errorTextVisibility(it.errorMessage)
+                }
+                is LeagueUIState.Loading -> {
+                    loaderVisibility(it.isLoading)
+                }
+                is LeagueUIState.LeagueList -> {
+                    recyclerViewVisibility(it.data)
+                    Log.e("DATAS", it.data.toString())
                 }
             }
+        }
+    }
+
+    private fun errorTextVisibility(errorMessage: String) {
+        binding?.apply {
+            loading.isVisible = false
+            list.isVisible = false
+            errorText.isVisible = true
+
+            errorText.text = errorMessage
+        }
+    }
+
+    private fun loaderVisibility(isLoader: Boolean) {
+        binding?.apply {
+            loading.isVisible = isLoader
+            list.isVisible = !isLoader
+            errorText.isVisible = !isLoader
+        }
+    }
+
+    private fun recyclerViewVisibility(leagueList: List<League>) {
+        binding?.apply {
+            loading.isVisible = false
+            list.isVisible = true
+            errorText.isVisible = false
+
+            adapter?.submitList(leagueList)
         }
     }
 

@@ -3,8 +3,11 @@ package com.example.matchscoresapp.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.bumptech.glide.Glide
 import com.example.matchscoresapp.databinding.ItemLeagueBinding
 import com.example.matchscoresapp.domain.model.League
@@ -17,9 +20,20 @@ class LeagueAdapter(private val onClick: (match: Match) -> Unit): ListAdapter<Le
         fun bind(item: League, onClick: (match: Match) -> Unit) {
             Glide.with(binding.root.context).load(item.league.url).into(binding.leagueImage)
             binding.leagueNameText.text = item.league.name
-            val adapter = MatchAdapter(onClick)
-            binding.matchListView.adapter = adapter
-            adapter.submitList(item.list)
+
+            setupMatchAdapter(onClick, item.list)
+        }
+        
+        
+        private fun setupMatchAdapter(onClick: (match: Match) -> Unit, list: List<Match>) {
+            with(binding) {
+                val adapter = MatchAdapter(onClick)
+                val layoutManager = LinearLayoutManager(root.context, LinearLayoutManager.VERTICAL, false)
+
+                matchListView.layoutManager = layoutManager
+                matchListView.adapter = adapter
+                adapter.submitList(list)
+            }
         }
     }
 
