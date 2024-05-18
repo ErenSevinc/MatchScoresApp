@@ -1,5 +1,6 @@
 package com.example.matchscoresapp.core
 
+import com.example.matchscoresapp.R
 import com.example.matchscoresapp.domain.model.Match
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -24,5 +25,17 @@ fun Match.getAwayName() : String{
         this.awaySubName
     } else {
         this.awayName
+    }
+}
+
+fun List<Match>.setBackgroundColorAndDividerVisibility(position: Int): Pair<Int,Boolean> {
+    return if (position == 0 && this.size == 1) {
+        Pair(first = R.drawable.rounded_all_background_white, second = false)
+    } else if (position == 0 && this.size > 1) {
+        Pair(first = R.drawable.rounded_top_background_white, second = true)
+    } else if(this.size -1 == position) {
+        Pair(first = R.drawable.rounded_bottom_background_white, second = false)
+    } else {
+        Pair(first = R.drawable.background_white, second = true)
     }
 }

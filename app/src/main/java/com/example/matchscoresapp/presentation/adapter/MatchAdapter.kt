@@ -1,20 +1,32 @@
 package com.example.matchscoresapp.presentation.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.matchscoresapp.core.getAwayName
+import com.example.matchscoresapp.core.setBackgroundColorAndDividerVisibility
 import com.example.matchscoresapp.core.getHomeName
 import com.example.matchscoresapp.databinding.ItemMatchBinding
 import com.example.matchscoresapp.domain.model.Match
 
-class MatchAdapter(private val onClick: (match: Match) -> Unit) : ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCallBack) {
+class MatchAdapter(private val onClick: (match: Match) -> Unit) :
+    ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCallBack) {
 
     class MatchViewHolder(private val binding: ItemMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Match, onClick: (match: Match) -> Unit) {
+        @SuppressLint("UseCompatLoadingForDrawables")
+        fun bind(
+            item: Match,
+            onClick: (match: Match) -> Unit,
+            bgAndDividerVisibility: Pair<Int, Boolean>
+        ) {
+            binding.container.background =
+                binding.root.context.getDrawable(bgAndDividerVisibility.first)
+            binding.divider.isVisible = bgAndDividerVisibility.second
             binding.textMatchStatus.text = item.matchAbbr
             binding.textHomeTeam.text = item.getHomeName()
             binding.textAwayTeam.text = item.getAwayName()
@@ -37,14 +49,18 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) : ListAdapter<Ma
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
 
-        holder.bind(getItem(position), onClick)
+        holder.bind(
+            getItem(position),
+            onClick,
+            currentList.setBackgroundColorAndDividerVisibility(position)
+        )
     }
 
-    object diffCallBack: DiffUtil.ItemCallback<Match>(){
+    object diffCallBack : DiffUtil.ItemCallback<Match>() {
         override fun areItemsTheSame(
             oldItem: Match,
             newItem: Match
-        ): Boolean  = oldItem === newItem
+        ): Boolean = oldItem === newItem
 
 
         override fun areContentsTheSame(
