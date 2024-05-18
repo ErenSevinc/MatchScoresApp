@@ -8,15 +8,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.matchscoresapp.databinding.ItemLeagueBinding
 import com.example.matchscoresapp.domain.model.League
+import com.example.matchscoresapp.domain.model.Match
 
-class LeagueAdapter(): ListAdapter<League, LeagueAdapter.LeagueViewHolder>(diffCallBack) {
+class LeagueAdapter(private val onClick: (match: Match) -> Unit): ListAdapter<League, LeagueAdapter.LeagueViewHolder>(diffCallBack) {
 
     class LeagueViewHolder(private val binding: ItemLeagueBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: League) {
+        fun bind(item: League, onClick: (match: Match) -> Unit) {
             Glide.with(binding.root.context).load(item.league.url).into(binding.leagueImage)
             binding.leagueNameText.text = item.league.name
-            val adapter = MatchAdapter()
+            val adapter = MatchAdapter(onClick)
             binding.matchListView.adapter = adapter
             adapter.submitList(item.list)
         }
@@ -29,7 +30,7 @@ class LeagueAdapter(): ListAdapter<League, LeagueAdapter.LeagueViewHolder>(diffC
     }
 
     override fun onBindViewHolder(holder: LeagueViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onClick)
     }
 
     object diffCallBack: DiffUtil.ItemCallback<League>(){

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_match"
+    app:startDestination="@id/matchListFragment">
+
+    <fragment
+        android:id="@+id/matchListFragment"
+        android:name="com.example.matchscoresapp.presentation.ui.list.MatchListFragment"
+        android:label="MatchListFragment"
+        tools:layout="@layout/fragment_match_list">
+        <action
+            android:id="@+id/navigateToMatchDetail"
+            app:destination="@id/matchDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/matchDetailFragment"
+        android:name="com.example.matchscoresapp.presentation.ui.detail.MatchDetailFragment"
+        android:label="fragment_match_detail"
+        tools:layout="@layout/fragment_match_detail" >
+        <argument
+            android:name="matchItem"
+            app:argType="com.example.matchscoresapp.domain.model.Match" />
+    </fragment>
+</navigation>

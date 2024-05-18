@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
     alias(libs.plugins.daggerHilt)
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -50,6 +51,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.legacy.support.v4)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

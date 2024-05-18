@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.matchscoresapp.databinding.ItemMatchBinding
 import com.example.matchscoresapp.domain.model.Match
 
-class MatchAdapter() : ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCallBack) {
+class MatchAdapter(private val onClick: (match: Match) -> Unit) : ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCallBack) {
 
     class MatchViewHolder(private val binding: ItemMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Match) {
+        fun bind(item: Match, onClick: (match: Match) -> Unit) {
             binding.textMatchStatus.text = item.matchAbbr
             binding.textHomeTeam.text = item.homeName
             binding.textAwayTeam.text = item.awayName
@@ -20,6 +20,10 @@ class MatchAdapter() : ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCall
                 "${item.homeMatchScore} - ${item.awayMatchScore}"
             binding.textHalfTimeScore.text =
                 "${item.homeHalfScore} - ${item.awayMatchScore}"
+
+            binding.root.setOnClickListener {
+                onClick.invoke(item)
+            }
         }
     }
 
@@ -30,7 +34,7 @@ class MatchAdapter() : ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCall
     }
 
     override fun onBindViewHolder(holder: MatchViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onClick)
     }
 
     object diffCallBack: DiffUtil.ItemCallback<Match>(){

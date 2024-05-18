@@ -1,4 +1,4 @@
-package com.example.matchscoresapp
+package com.example.matchscoresapp.presentation.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
+class MatchListViewModel @Inject constructor(
     private val getMatchesUseCase: GetMatchesUseCase
 ) : ViewModel() {
 
@@ -29,8 +29,6 @@ class MainViewModel @Inject constructor(
 
     private val itemList = mutableListOf<League>()
 
-
-
     fun getMatches() {
         viewModelScope.launch {
             getMatchesUseCase.execute().collect { it ->
@@ -39,11 +37,9 @@ class MainViewModel @Inject constructor(
                         _error.value = it.errorMessage
                         _isLoading.value = false
                     }
-
                     is Resource.Loading -> {
                         _isLoading.value = true
                     }
-
                     is Resource.Success -> {
                         it.data?.let { baseApiResponse ->
                             itemList.clear()
@@ -60,7 +56,6 @@ class MainViewModel @Inject constructor(
                                 }
                             _matches.value = itemList
                         }
-
                     }
                 }
             }
