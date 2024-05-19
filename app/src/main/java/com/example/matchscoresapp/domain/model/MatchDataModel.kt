@@ -1,6 +1,9 @@
 package com.example.matchscoresapp.domain.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.example.matchscoresapp.core.Constants
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,12 +16,15 @@ data class League(
 data class LeagueItem(
     val id: Long,
     val name: String,
-    val url: String
+    val url: String? = null
 ): Parcelable
 
 @Parcelize
+@Entity(tableName = Constants.DB_NAME)
 data class Match(
-    val id: Long,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    val matchId: Long,
     val date: Long,
     val homeName: String,
     val homeSubName: String,
@@ -29,5 +35,6 @@ data class Match(
     val awayHalfScore: Long,
     val awayMatchScore: Long,
     val matchSt: Int,
-    val matchAbbr: String
+    val matchAbbr: String,
+    var isFavourite: Boolean = false
 ): Parcelable

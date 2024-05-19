@@ -7,7 +7,7 @@ import com.example.matchscoresapp.domain.model.Match
 
 fun MatchesResponseModel.toMatch(): Match {
     return Match(
-        id = this.matchId ?: -1,
+        matchId = this.matchId ?: -1,
         date = this.date ?: -1,
         homeName = this.homeTeam?.teamName ?: "",
         homeSubName = this.homeTeam?.teamSubName ?: "",

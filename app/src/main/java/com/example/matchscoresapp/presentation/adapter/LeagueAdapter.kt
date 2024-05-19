@@ -13,21 +13,21 @@ import com.example.matchscoresapp.databinding.ItemLeagueBinding
 import com.example.matchscoresapp.domain.model.League
 import com.example.matchscoresapp.domain.model.Match
 
-class LeagueAdapter(private val onClick: (match: Match) -> Unit): ListAdapter<League, LeagueAdapter.LeagueViewHolder>(diffCallBack) {
+class LeagueAdapter(private val onClick: (match: Match) -> Unit, private val onFavClick: (match: Match) -> Unit): ListAdapter<League, LeagueAdapter.LeagueViewHolder>(diffCallBack) {
 
     class LeagueViewHolder(private val binding: ItemLeagueBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: League, onClick: (match: Match) -> Unit) {
+        fun bind(item: League, onClick: (match: Match) -> Unit, onFavClick: (match: Match) -> Unit) {
             Glide.with(binding.root.context).load(item.league.url).into(binding.leagueImage)
             binding.leagueNameText.text = item.league.name
 
-            setupMatchAdapter(onClick, item.list)
+            setupMatchAdapter(onClick, onFavClick, item.list)
         }
         
         
-        private fun setupMatchAdapter(onClick: (match: Match) -> Unit, list: List<Match>) {
+        private fun setupMatchAdapter(onClick: (match: Match) -> Unit, onFavClick: (match: Match) -> Unit, list: List<Match>) {
             with(binding) {
-                val adapter = MatchAdapter(onClick)
+                val adapter = MatchAdapter(onClick, onFavClick)
                 val layoutManager = LinearLayoutManager(root.context, LinearLayoutManager.VERTICAL, false)
 
                 matchListView.layoutManager = layoutManager
@@ -44,7 +44,7 @@ class LeagueAdapter(private val onClick: (match: Match) -> Unit): ListAdapter<Le
     }
 
     override fun onBindViewHolder(holder: LeagueViewHolder, position: Int) {
-        holder.bind(getItem(position), onClick)
+        holder.bind(getItem(position), onClick, onFavClick)
     }
 
     object diffCallBack: DiffUtil.ItemCallback<League>(){

@@ -29,18 +29,26 @@ class MatchListFragment : Fragment() {
         binding = FragmentMatchListBinding.inflate(layoutInflater, container, false)
 
         viewModel.getMatches()
-        setupLayout()
         setupObservers()
 
         return binding?.root ?: View(context)
     }
 
-    private fun setupLayout() {
-        adapter = LeagueAdapter{
-            Log.e("Match", it.toString())
-            val direction = MatchListFragmentDirections.navigateToMatchDetail(it)
-            findNavController().navigate(direction)
-        }
+    private fun setupRecyclerView() {
+        adapter = LeagueAdapter(
+            onClick = {
+                Log.e("Match", it.toString())
+                val direction = MatchListFragmentDirections.navigateToMatchDetail(it)
+                findNavController().navigate(direction)
+            },
+            onFavClick = {
+                if (it.isFavourite) {
+                    viewModel.insertMatch(it)
+                } else {
+                    viewModel.deleteMatch(it)
+                }
+            }
+        )
         binding?.list?.adapter = adapter
     }
 
@@ -85,7 +93,8 @@ class MatchListFragment : Fragment() {
             list.isVisible = true
             errorText.isVisible = false
 
-            adapter?.submitList(leagueList)
+            setupRecyclerView()
+            adapter?.submitList(leagueList.toMutableList())
         }
     }
 

@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.matchscoresapp.core.getAwayName
 import com.example.matchscoresapp.core.getHomeName
+import com.example.matchscoresapp.core.isFavMatch
 import com.example.matchscoresapp.core.setBackgroundColorAndDividerVisibility
 import com.example.matchscoresapp.databinding.ItemMatchBinding
 import com.example.matchscoresapp.domain.model.Match
 
-class MatchAdapter(private val onClick: (match: Match) -> Unit) :
+class MatchAdapter(private val onClick: (match: Match) -> Unit, private val onFavClick: (match: Match) -> Unit) :
     ListAdapter<Match, MatchAdapter.MatchViewHolder>(diffCallBack) {
 
     class MatchViewHolder(private val binding: ItemMatchBinding) :
@@ -22,22 +23,24 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) :
         fun bind(
             item: Match,
             onClick: (match: Match) -> Unit,
+            onFavClick: (match: Match) -> Unit,
             bgAndDividerVisibility: Pair<Int, Boolean>
         ) {
             with(binding) {
-                container.background =
-                    root.context.getDrawable(bgAndDividerVisibility.first)
-                binding.divider.isVisible = bgAndDividerVisibility.second
+                container.background = root.context.getDrawable(bgAndDividerVisibility.first)
+                divider.isVisible = bgAndDividerVisibility.second
                 textMatchStatus.text = item.matchAbbr
                 textHomeTeam.text = item.getHomeName()
                 textAwayTeam.text = item.getAwayName()
-                textMatchScore.text =
-                    "${item.homeMatchScore} - ${item.awayMatchScore}"
-                textHalfTimeScore.text =
-                    "${item.homeHalfScore} - ${item.awayMatchScore}"
+                textMatchScore.text = "${item.homeMatchScore} - ${item.awayMatchScore}"
+                buttonFavourite.setBackgroundResource(item.isFavourite.isFavMatch())
 
                 root.setOnClickListener {
                     onClick.invoke(item)
+                }
+                buttonFavourite.setOnClickListener {
+                    item.isFavourite = !item.isFavourite
+                    onFavClick.invoke(item)
                 }
             }
         }
@@ -54,6 +57,7 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) :
         holder.bind(
             getItem(position),
             onClick,
+            onFavClick,
             currentList.setBackgroundColorAndDividerVisibility(position)
         )
     }
@@ -68,6 +72,6 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit) :
         override fun areContentsTheSame(
             oldItem: Match,
             newItem: Match
-        ): Boolean = oldItem.id == newItem.id
+        ): Boolean = oldItem.matchId == newItem.matchId
     }
 }
