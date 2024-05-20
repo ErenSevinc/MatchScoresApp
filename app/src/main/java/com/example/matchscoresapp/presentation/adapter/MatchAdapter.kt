@@ -24,11 +24,11 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit, private val onFa
             item: Match,
             onClick: (match: Match) -> Unit,
             onFavClick: (match: Match) -> Unit,
-            bgAndDividerVisibility: Pair<Int, Boolean>
+            bgColorAndDividerVisibility: Pair<Int, Boolean>
         ) {
             with(binding) {
-                container.background = root.context.getDrawable(bgAndDividerVisibility.first)
-                divider.isVisible = bgAndDividerVisibility.second
+                container.background = root.context.getDrawable(bgColorAndDividerVisibility.first)
+                divider.isVisible = bgColorAndDividerVisibility.second
                 textMatchStatus.text = item.matchAbbr
                 textHomeTeam.text = item.getHomeName()
                 textAwayTeam.text = item.getAwayName()

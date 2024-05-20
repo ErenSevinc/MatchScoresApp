@@ -50,6 +50,7 @@ class MatchListViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         itemList.clear()
+                        // if favourite matches not empty add League row of selected favourite matches
                         if (_favMatches.value?.isNotEmpty() == true) {
                             itemList.add(
                                 League(
@@ -64,18 +65,25 @@ class MatchListViewModel @Inject constructor(
                             )
                         }
                         it.data?.let { baseApiResponse ->
+                            // filters API response according to finished matches
+                            // than groups the finished matches according to league name
+                            // finally maps API response model by data model
                             baseApiResponse.data?.filter { it.score?.st == 5 }?.groupBy { it.tournament }?.map { map ->
+                                //set first favourite value or the found of favourite items fav value
                                 val listMappedMatch = mutableListOf<Match>()
                                 map.value.toMatchList().forEach {mapValueItem ->
+                                    // sets first favourite value
                                     if (_favMatches.value?.isEmpty() == true) {
                                         mapValueItem.isFavourite = false
                                     } else {
+                                        //sets favourite value the found favourite item
                                         _favMatches.value?.forEach {favMatchItem ->
                                             if (favMatchItem.matchId == mapValueItem.matchId) {
                                                 mapValueItem.isFavourite = true
                                             }
                                         }
                                     }
+                                    //the item add data model list
                                     listMappedMatch.add(mapValueItem)
                                 }
                                 map.key?.let { tournament ->
@@ -97,6 +105,7 @@ class MatchListViewModel @Inject constructor(
 
     fun insertMatch(match: Match) {
         viewModelScope.launch(Dispatchers.IO) {
+            //check for selected match is before to be added
             val filteredArticles = _favMatches.value?.firstOrNull {
                 it.matchId == match.matchId
             }
@@ -111,6 +120,7 @@ class MatchListViewModel @Inject constructor(
 
     fun deleteMatch(match: Match) {
         viewModelScope.launch(Dispatchers.IO) {
+            //find selected match to be deleted
             _favMatches.value?.forEach {
                 if (it.matchId == match.matchId) {
                     match.isFavourite = false
