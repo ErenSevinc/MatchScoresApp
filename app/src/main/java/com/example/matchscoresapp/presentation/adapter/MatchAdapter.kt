@@ -39,7 +39,6 @@ class MatchAdapter(private val onClick: (match: Match) -> Unit, private val onFa
                     onClick.invoke(item)
                 }
                 buttonFavourite.setOnClickListener {
-                    item.isFavourite = !item.isFavourite
                     onFavClick.invoke(item)
                 }
             }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MatchScoresApp</string>
+    <string name="match_list_title">Match List</string>
+    <string name="match_detail_title">Match Detail</string>
 </resources>

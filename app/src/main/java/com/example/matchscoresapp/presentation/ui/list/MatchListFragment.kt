@@ -8,17 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.matchscoresapp.R
 import com.example.matchscoresapp.core.LeagueUIState
 import com.example.matchscoresapp.databinding.FragmentMatchListBinding
 import com.example.matchscoresapp.domain.model.League
 import com.example.matchscoresapp.presentation.adapter.LeagueAdapter
+import com.example.matchscoresapp.presentation.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MatchListFragment : Fragment() {
 
     private val viewModel: MatchListViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var binding: FragmentMatchListBinding? = null
     private var adapter: LeagueAdapter? = null
 
@@ -27,6 +31,9 @@ class MatchListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMatchListBinding.inflate(layoutInflater, container, false)
+
+        mainViewModel.setToolbarTitle(getString(R.string.match_list_title))
+        mainViewModel.setToolbarVisibility(false)
 
         viewModel.getMatches()
         setupObservers()
@@ -42,7 +49,7 @@ class MatchListFragment : Fragment() {
                 findNavController().navigate(direction)
             },
             onFavClick = {
-                if (it.isFavourite) {
+                if (!it.isFavourite) {
                     viewModel.insertMatch(it)
                 } else {
                     viewModel.deleteMatch(it)

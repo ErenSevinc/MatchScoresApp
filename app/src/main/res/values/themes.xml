@@ -3,7 +3,60 @@
     <style name="Base.Theme.MatchScoresApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/navy_blue_700</item>
+        <item name="colorPrimaryVariant">@color/navy_blue_500</item>
+        <item name="colorOnPrimary">@color/navy_blue_300</item>
+        <item name="colorSecondary">@color/navy_blue_soft_700</item>
+        <item name="colorSecondaryVariant">@color/navy_blue_soft_500</item>
+        <item name="colorOnSecondary">@color/navy_blue_soft_300</item>
     </style>
 
     <style name="Theme.MatchScoresApp" parent="Base.Theme.MatchScoresApp" />
+
+    <style name="TeamTextStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/navy_blue_700</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+    <style name="ScoreBoardTextStyle">
+        <item name="android:lineSpacingExtra">16dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="MatchStatusTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/navy_blue_700</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ListHeaderTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ToolbarTextStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DetailMatchStatusTextStyle">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="DetailDateTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="DetailTextStyle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="DetailScoreBoardTextStyle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

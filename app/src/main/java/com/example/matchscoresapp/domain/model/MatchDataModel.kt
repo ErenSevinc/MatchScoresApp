@@ -16,6 +16,7 @@ data class League(
 data class LeagueItem(
     val id: Long,
     val name: String,
+    val subName: String,
     val url: String? = null
 ): Parcelable
 
@@ -26,6 +27,8 @@ data class Match(
     val id: Int = 0,
     val matchId: Long,
     val date: Long,
+    val leagueName: String,
+    val leagueSubName: String,
     val homeName: String,
     val homeSubName: String,
     val awayName: String,

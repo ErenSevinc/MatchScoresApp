@@ -1,6 +1,8 @@
 package com.example.matchscoresapp.core
 
 import com.example.matchscoresapp.R
+import com.example.matchscoresapp.domain.model.League
+import com.example.matchscoresapp.domain.model.LeagueItem
 import com.example.matchscoresapp.domain.model.Match
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -8,13 +10,16 @@ import java.util.Locale
 
 /***
  * toDate() : Uses in MatchDetailFragment
- *      returns date string from API's millisecond value of a date parameter
+ *      returns date string from APIs millisecond value of a date parameter
  *
- * getHomeName() : Uses in MatchAdapter
+ * getHomeName() : Uses in MatchAdapter, MatchDetailFragment
  *      returns home team name according to character size
  *
- * getAwayName() : Uses in MatchAdapter
+ * getAwayName() : Uses in MatchAdapter, MatchDetailFragment
  *      returns away team name according to character size
+ *
+ * getLeagueName() : Uses in MatchDetailFragment
+ *      returns league name according to character size
  *
  * setBackgroundColorAndDividerVisibility() : Uses in MatchAdapter
  *      returns pair containing the drawableRes id and divider visibility according to list size and item position,
@@ -44,6 +49,14 @@ fun Match.getAwayName(): String {
         this.awaySubName
     } else {
         this.awayName
+    }
+}
+
+fun Match.getLeagueName(): String {
+    return if (this.leagueName.length > 20) {
+        this.leagueSubName
+    } else {
+        this.leagueName
     }
 }
 

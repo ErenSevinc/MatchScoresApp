@@ -4,18 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.detail.MatchDetailFragment">
+    tools:context=".presentation.ui.detail.MatchDetailFragment"
+    android:background="@color/navy_blue_700">
+
+    <TextView
+        android:id="@+id/league"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:textAppearance="@style/DetailMatchStatusTextStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Türkiye Süper Ligi" />
 
     <TextView
         android:id="@+id/match_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:textSize="24dp"
-        android:textStyle="bold"
+        android:textAppearance="@style/DetailMatchStatusTextStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/league"
         tools:text="MS" />
 
     <TextView
@@ -23,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textAppearance="@style/DetailDateTextStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/match_status"
@@ -34,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textAppearance="@style/DetailScoreBoardTextStyle"
         app:layout_constraintTop_toBottomOf="@id/match_date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,8 +56,10 @@
         android:id="@+id/home_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toStartOf="@id/score"
+        android:layout_marginStart="16dp"
+        android:textAppearance="@style/DetailTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/score"
         tools:text="FB" />
 
@@ -52,10 +67,23 @@
         android:id="@+id/away_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/score"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/DetailTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/score"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/score"
         tools:text="GS" />
+
+    <TextView
+        android:id="@+id/half_time_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/DetailTextStyle"
+        app:layout_constraintStart_toStartOf="@id/score"
+        app:layout_constraintEnd_toEndOf="@id/score"
+        app:layout_constraintTop_toBottomOf="@id/score"
+        tools:text="IY: 1-0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

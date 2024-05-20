@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/matchListFragment"
         android:name="com.example.matchscoresapp.presentation.ui.list.MatchListFragment"
-        android:label="MatchListFragment"
+        android:label="Match List"
         tools:layout="@layout/fragment_match_list">
         <action
             android:id="@+id/navigateToMatchDetail"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/matchDetailFragment"
         android:name="com.example.matchscoresapp.presentation.ui.detail.MatchDetailFragment"
-        android:label="fragment_match_detail"
+        android:label="Match Detail"
         tools:layout="@layout/fragment_match_detail" >
         <argument
             android:name="matchItem"

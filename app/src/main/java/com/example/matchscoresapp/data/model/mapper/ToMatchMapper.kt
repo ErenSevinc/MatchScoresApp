@@ -9,6 +9,8 @@ fun MatchesResponseModel.toMatch(): Match {
     return Match(
         matchId = this.matchId ?: -1,
         date = this.date ?: -1,
+        leagueName = this.tournament?.tournamentName ?: "",
+        leagueSubName = this.tournament?.tournamentSubName ?: "",
         homeName = this.homeTeam?.teamName ?: "",
         homeSubName = this.homeTeam?.teamSubName ?: "",
         awayName = this.awayTeam?.teamName ?: "",
@@ -33,6 +35,7 @@ fun Tournament.toLeague(): LeagueItem {
     return LeagueItem(
         id = this.tournamentId ?: -1,
         name = this.tournamentName ?: "",
+        subName = this.tournamentSubName ?: "",
         url = this.iconUrl ?: ""
     )
 }

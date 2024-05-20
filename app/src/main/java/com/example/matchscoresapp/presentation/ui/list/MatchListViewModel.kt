@@ -8,9 +8,7 @@ import com.example.matchscoresapp.core.Constants
 import com.example.matchscoresapp.core.LeagueUIState
 import com.example.matchscoresapp.core.Resource
 import com.example.matchscoresapp.data.local.LocalRepository
-import com.example.matchscoresapp.data.model.MatchesResponseModel
 import com.example.matchscoresapp.data.model.mapper.toLeague
-import com.example.matchscoresapp.data.model.mapper.toMatch
 import com.example.matchscoresapp.data.model.mapper.toMatchList
 import com.example.matchscoresapp.domain.model.League
 import com.example.matchscoresapp.domain.model.LeagueItem
@@ -18,7 +16,6 @@ import com.example.matchscoresapp.domain.model.Match
 import com.example.matchscoresapp.domain.useCase.GetMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +28,7 @@ class MatchListViewModel @Inject constructor(
     private val _matchesState = MutableLiveData<LeagueUIState>()
     val matchesState: LiveData<LeagueUIState> = _matchesState
 
-    private val _favMatches = MutableStateFlow(emptyList<Match>())
+    private val _favMatches = MutableLiveData(emptyList<Match>())
 
     private val itemList = mutableListOf<League>()
 
@@ -53,15 +50,16 @@ class MatchListViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         itemList.clear()
-                        if (_favMatches.value.isNotEmpty()) {
+                        if (_favMatches.value?.isNotEmpty() == true) {
                             itemList.add(
                                 League(
                                     league = LeagueItem(
                                         id = Constants.FAV_HEADER_ID,
                                         name = Constants.FAV_HEADER_NAME,
+                                        subName = Constants.FAV_HEADER_SUB_NAME,
                                         url = Constants.FAV_HEADER_ICON_URL
                                     ),
-                                    list = _favMatches.value
+                                    list = _favMatches.value ?: emptyList()
                                 )
                             )
                         }
@@ -69,10 +67,10 @@ class MatchListViewModel @Inject constructor(
                             baseApiResponse.data?.filter { it.score?.st == 5 }?.groupBy { it.tournament }?.map { map ->
                                 val listMappedMatch = mutableListOf<Match>()
                                 map.value.toMatchList().forEach {mapValueItem ->
-                                    if (_favMatches.value.isEmpty()) {
+                                    if (_favMatches.value?.isEmpty() == true) {
                                         mapValueItem.isFavourite = false
                                     } else {
-                                        _favMatches.value.forEach {favMatchItem ->
+                                        _favMatches.value?.forEach {favMatchItem ->
                                             if (favMatchItem.matchId == mapValueItem.matchId) {
                                                 mapValueItem.isFavourite = true
                                             }
@@ -99,7 +97,7 @@ class MatchListViewModel @Inject constructor(
 
     fun insertMatch(match: Match) {
         viewModelScope.launch(Dispatchers.IO) {
-            val filteredArticles = _favMatches.value.firstOrNull {
+            val filteredArticles = _favMatches.value?.firstOrNull {
                 it.matchId == match.matchId
             }
             if (filteredArticles == null) {
@@ -113,7 +111,7 @@ class MatchListViewModel @Inject constructor(
 
     fun deleteMatch(match: Match) {
         viewModelScope.launch(Dispatchers.IO) {
-            _favMatches.value.forEach {
+            _favMatches.value?.forEach {
                 if (it.matchId == match.matchId) {
                     match.isFavourite = false
                     localRepository.delete(it)
@@ -126,7 +124,7 @@ class MatchListViewModel @Inject constructor(
 
     private fun getFavMatches() {
         viewModelScope.launch(Dispatchers.IO) {
-            _favMatches.value = localRepository.getFavMatches()
+            _favMatches.postValue(localRepository.getFavMatches())
         }
     }
 }
